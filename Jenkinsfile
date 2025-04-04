@@ -1,26 +1,11 @@
 pipeline {
     agent {
-        docker {
-            image 'alpine/git' // A small image with Git
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
+        docker { image 'node:22.14.0-alpine3.21' }
     }
     stages {
-        stage('Checkout') {
+        stage('Test') {
             steps {
-                checkout scm
-            }
-        }
-        stage('List Files') {
-            steps {
-                sh 'ls -l'
-            }
-        }
-        stage('Demo Task with Delay') {
-            steps {
-                echo 'Starting demo task...'
-                sh 'sleep 8' // Introduce an 8-second delay
-                echo 'Demo task finished.'
+                sh 'node --eval "console.log(process.platform,process.env.CI)"'
             }
         }
     }
